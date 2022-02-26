@@ -6,7 +6,7 @@ import pygame
 import colors
 import fonts
 
-def draw(screen, rect):
+def draw(screen, rect, props):
     pass 
 
     # # Draw rectangle

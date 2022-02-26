@@ -12,7 +12,9 @@ time_font = fonts.font_10xl
 ampm_font = fonts.font_8xl
 sun_font = fonts.font_4xl
 
-def draw(screen, rect):
+def draw(screen, rect, props):
+
+    props.setdefault('location', 'local')
 
     content_height = date_font.get_height() + date_font.get_height()//4 + time_font.get_height() + sun_font.get_height()
     center = (rect.x + rect.width//2, rect.y + rect.height//2)
@@ -45,13 +47,13 @@ def draw(screen, rect):
     ampm_text_rect.topleft = (time_x + (time_width - ampm_text_rect.width), time_text_rect.y + (y_offset_time - y_offset_ampm))
     screen.blit(ampm_text, ampm_text_rect)
 
-    weather_data = weather.current()
+    weather_data = weather.current(props['location'])
 
     if not weather_data:
         return
 
     # Draw Sunrise/Sunset time
-    next_sun_event = get_next_sun_event(weather_data)
+    next_sun_event = get_next_sun_event(weather_data, props['location'])
     sun_text = next_sun_event[0][0].upper() + next_sun_event[0][1:] + " at " + format_time(next_sun_event[1])
     sun_text = sun_font.render(sun_text, 1, colors.white)
     sun_text_rect = sun_text.get_rect()
@@ -70,7 +72,7 @@ def time():
 def ampm():
     return datetime.now().strftime("%p")
 
-def get_next_sun_event(today):
+def get_next_sun_event(today, location):
 
     if datetime.fromtimestamp(today['sunrise']) > datetime.now():
         return ('sunrise', today['sunrise'])
@@ -79,7 +81,7 @@ def get_next_sun_event(today):
         return ('sunset', today['sunset'])
 
     # Sun has set for today so get tomorrow's sunrise
-    return ('sunrise', weather.daily()[1]['sunrise'])
+    return ('sunrise', weather.daily(location)[1]['sunrise'])
 
 def format_time(timestamp):
     time = datetime.fromtimestamp(timestamp)
