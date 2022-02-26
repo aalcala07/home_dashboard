@@ -10,6 +10,7 @@ import fonts
 padding = 10
 counter_font = fonts.font_8xl
 label_font = fonts.font_3xl
+
 def draw(screen, rect, props):
 
     y_padding = (rect.height - (counter_font.get_height() + label_font.get_height()))//2

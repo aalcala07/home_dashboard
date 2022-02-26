@@ -76,11 +76,41 @@ The following settings can be changed in the `.env` file without writing any cod
 - `SHOW_MOUSE` - Shows mouse cursor
 - `DEBUG_GRID` - Shows colored grid for debuging
 - `OPEN_WEATHER_MAP_API_KEY` - The API Key used to get weather data from the Open Weather Map API
-- `LOCATION_LAT` - The latitude value used when getting weather data from Open Weather Map API
-- `LOCATION_LONG` - The longitude value used when getting weather data from the Open Weather Map API
-- `WEATHER_RELOAD_FREQUENCY_MINUTES` - The number of minutes between requests to the Open Weather Map API (check your plan details to see how many requests you can make per day)
+- `LOCAL_LAT` - The latitude value used when getting weather data from Open Weather Map API
+- `LOCAL_LONG` - The longitude value used when getting weather data from the Open Weather Map API
+- `UPDATE_ON_STARTUP` - Whether to trigger the update function on all services at startup
+- `TEMPLATE_CONFIG_FILE` - Specifiy which file to use for the template config.
+- `SERVICES_CONFIG_FILE` - Specify which file to use for the services config.
 
-For other changes, see below.
+## Getting Weather for Multiple Locations
+
+By default, weather data is retrieved for only one location. You can retrieve data for multiple locations by adding to the `services.json` file.
+
+Under locations, add another object to the array like so:
+
+```
+"locations": [
+    {
+        "name": "local"
+    },
+    {
+        "name": "chicago",
+        "lat": 41.97571706813654,
+        "long": -87.71617764143481
+    }
+]
+```
+
+You can also add the coordinates in the `.env` if you don't want to add them to `services.json` so that they aren't version controlled:
+
+```
+chicago_lat=41.97571706813654
+chicago_long=-87.71617764143481
+```
+
+Finally, update the `location` field for second weather component in `template.json`.
+
+<blockquote><b>Note</b>: An API request is sent for each location, so you may want to adjust <code>update_interval_seconds</code> in <code>services.json</code> to avoid throttling.</blockquote>
 
 ### Making Code Changes
 
@@ -93,7 +123,7 @@ Here's some information on creating forks and deploy keys:
 
 ### Creating a Component
 
-You can add your own component my creating a Python module in the `components` directory and then registering it in `template.json`. All components must have a `draw` function that accepts two arguments (`screen` and `rect`) at a minimum. You can look at existing components to see how this is done.
+You can add your own component my creating a Python module in the `components` directory and then registering it in `template.json`. All components must have a `draw` function that accepts thre arguments (`screen`, `rect`, and `props`) at a minimum. You can look at existing components to see how this is done.
 
 ### Registering Component
 
@@ -110,7 +140,10 @@ Here is the row containing the Clock component, for example.
             "columns": [
                 {
                     "width": "1",
-                    "component": "clock"
+                    "component": "clock",
+                    "props": {
+                        "location": "local"
+                    }
                 }
             ]
         }
@@ -121,7 +154,7 @@ Here is the row containing the Clock component, for example.
 
 - `height`: Sets the height as a fraction of the screen height.
 - `use_margin`: Adds a left and right margins to the row when set to `true`.
-- `columns`: Array of columns displayed from left to right in a row. Within each column the `width` field defines the width of the column as a fraction of the row width, while the `component` field defines the name of the component to be displayed.
+- `columns`: Array of columns displayed from left to right in a row. Within each column the `width` field defines the width of the column as a fraction of the row width, while the `component` field defines the name of the component to be displayed. The `props` field is for any option properties you want to pass to the component.
 
 To have two components show side by side set the columns to:
 
