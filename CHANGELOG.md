@@ -1,6 +1,6 @@
 # Release Notes
 
-## [Unreleased](https://github.com/aalcala07/home_dashboard/v0.2.0...0.x)
+## [Unreleased](https://github.com/aalcala07/home_dashboard/compare/v0.2.0...0.x)
 
 ## [v0.2.0](https://github.com/aalcala07/home_dashboard/compare/v0.1.0...v0.2.0) - 2022-02-25
 
