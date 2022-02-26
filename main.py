@@ -1,6 +1,8 @@
-import sys, pygame
+import sys, pygame, os
+import logging
 from decouple import config
-import ui, colors, weather
+import ui, colors
+import update
 
 CAPTION = config('CAPTION', default='Home Dashboard', cast=str)
 FPS = config('FPS', default=1, cast=int)
@@ -10,13 +12,25 @@ screen = pygame.display.set_mode((ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT))
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 
+if not os.path.exists('cache'):
+    os.mkdir('cache')
+
 # Hide Mouse
 pygame.mouse.set_visible(config('SHOW_MOUSE', default=False, cast=bool))
 
-# Create timer to fetch weather at intervals
-FETCH_WEATHER = pygame.USEREVENT+1
-pygame.time.set_timer(FETCH_WEATHER, int(1000 * 60 * weather.FREQUENCY))
-weather.fetch()
+UPDATE_EVENTS = {}
+for service, update_frequency in update.list_active_services():
+    if (callback := update.get_update_callback(service)):
+        logging.info(f'Found callback for {service}')
+        event_type = pygame.event.custom_type()
+        UPDATE_EVENTS[event_type] = callback
+        if update_frequency:
+            pygame.time.set_timer(event_type, 1000 * update_frequency)
+        if config('UPDATE_ON_STARTUP', default=False, cast=bool):
+            logging.info(f'Updating {service} data')
+            callback()
+    else:
+        logging.warning(f'No update callback found for {service}')
 
 while True:
 
@@ -31,8 +45,8 @@ while True:
             pygame.quit()
             sys.exit()
 
-        if event.type == FETCH_WEATHER:
-            weather.fetch()
+        if event.type in UPDATE_EVENTS:
+            UPDATE_EVENTS[event.type]()
 
     pygame.display.update()
     clock.tick(FPS)

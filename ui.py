@@ -1,7 +1,8 @@
 import pygame, sys, json
+from importlib import import_module
 from decouple import config
 from fractions import Fraction
-from itertools import repeat
+#from itertools import repeat
 import colors
 
 SCREEN_WIDTH = config('SCREEN_WIDTH', default=1080, cast=int)
@@ -33,8 +34,7 @@ def row_y(row_number):
     return y
 
 def get_component_callback(component_name):
-    sys.path.append('components')
-    module = __import__(component_name)
+    module = import_module('components.' + component_name)
     return getattr(module, 'draw')
 
 debug_color_index = 0
@@ -73,4 +73,3 @@ def get_rows():
     return rows
 
 rows = get_rows()
-

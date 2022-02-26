@@ -1,7 +1,9 @@
 import sys
 from datetime import date, datetime, timedelta
 
-sys.path.append('../')
+if '../' not in sys.path:
+    sys.path.append('../')
+
 import colors
 import fonts
 

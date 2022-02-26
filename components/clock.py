@@ -1,11 +1,9 @@
 import sys
 from datetime import datetime
+if '../' not in sys.path:
+    sys.path.append('../')
 
-sys.path.append('../')
-import pygame
-import colors
-import fonts
-import weather
+import colors, fonts, services.weather as weather
 
 padding = 10
 
