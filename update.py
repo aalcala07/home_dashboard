@@ -1,8 +1,9 @@
 import sys, json
 from importlib import import_module
+from decouple import config
 
 def list_active_services():
-    with open('services.json') as json_file:
+    with open(config('SERVICES_CONFIG_FILE', 'services.json')) as json_file:
         grid_data = json.load(json_file)
     services = [(row.get('service'), row.get('update_interval_seconds', 0)) for row in grid_data['services'] if row.get('service')]
     return services
