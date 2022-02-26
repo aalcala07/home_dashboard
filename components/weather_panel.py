@@ -13,8 +13,10 @@ ICON_SCALE = config('ICON_SCALE', default=1, cast=int)
 forecast_day_font = fonts.font_4xl
 forecast_temp_font = fonts.font_4xl
 
-def draw(screen, rect):
-    weather_data = weather.get()
+def draw(screen, rect, props):
+
+    props.setdefault('location', '')
+    weather_data = weather.get(props['location'])
 
     if not weather_data:
         # TODO: Add loading text/animation

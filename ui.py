@@ -25,7 +25,7 @@ def draw_row(screen, row_number):
 
         if "component" in column:
             rect = pygame.Rect(x, y, column['width'], row_height)
-            column["component"](screen, rect)
+            column['component'](screen, rect, column['props'])
 
         x += column["width"]
 
@@ -61,7 +61,8 @@ def get_rows():
             columns.append({
                 "width": int((SCREEN_WIDTH - margins) * Fraction(column['width'])),
                 "component": get_component_callback(column['component']),
-                "debug_color": next_debug_color()
+                "debug_color": next_debug_color(),
+                "props": column.get('props', {})
             })
 
         rows.append({

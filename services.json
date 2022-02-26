@@ -2,7 +2,12 @@
     "services": [
         {
             "service": "weather",
-            "update_interval_seconds": 300
+            "update_interval_seconds": 300,
+            "locations": [
+                {
+                    "name": "local"
+                }
+            ]
         },
         {
             "service": "is_it_friday",

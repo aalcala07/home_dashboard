@@ -12,7 +12,7 @@ padding = 10
 
 font = fonts.font_6xl
 
-def draw(screen, rect):
+def draw(screen, rect, props):
     content_height = font.get_height()
     center = (rect.x + rect.width//2, rect.y + rect.height//2)
     content_y = center[1] - content_height//2

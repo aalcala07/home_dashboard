@@ -16,7 +16,10 @@
             "columns": [
                 {
                     "width": "1",
-                    "component": "clock"
+                    "component": "clock",
+                    "props": {
+                        "location": "local"
+                    }
                 }
             ]
         },
@@ -26,7 +29,10 @@
             "columns": [
                 {
                     "width": "1",
-                    "component": "weather_panel"
+                    "component": "weather_panel",
+                    "props": {
+                        "location": "local"
+                    }
                 }
             ]
         },

@@ -13,7 +13,7 @@ camera_bg_color = colors.gray_700
 camera_outline_color = colors.bg_color
 padding = 10
 
-def draw(screen, rect):
+def draw(screen, rect, props):
 
     primary_camera_height = rect.height*3/5
     secondary_camera_height = rect.height*2/5
