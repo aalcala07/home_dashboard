@@ -48,11 +48,11 @@
         },
         {
             "height": "1/32",
-            "use_margin": true,
+            "use_margin": false,
             "columns": [
                 {
                     "width": "1",
-                    "component": "blank"
+                    "component": "device_info"
                 }
             ]
         }
