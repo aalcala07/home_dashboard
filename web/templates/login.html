@@ -1,0 +1,16 @@
+{% extends "layouts/guest.html" %}
+{% block title %}Login - Home Dashboard{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    
+  </style>
+{% endblock %}
+{% block content %}
+    <h1>Login</h1>
+    <form method="post">
+        <input type=hidden name=username value="root">
+        <p><input type=password name=password></p>
+        <p><input type=submit value=Login></p>
+    </form>
+{% endblock %}

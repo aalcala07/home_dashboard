@@ -1,4 +1,4 @@
-import sys, pygame, os
+import sys, pygame, os, subprocess
 import logging
 from decouple import config
 import ui, colors
@@ -6,6 +6,9 @@ import update
 
 CAPTION = config('CAPTION', default='Home Dashboard', cast=str)
 FPS = config('FPS', default=1, cast=int)
+
+if config('ENABLE_WEB_CONSOLE', default=False, cast=bool):
+    web_process = subprocess.Popen(['python', 'web/app.py'])
 
 pygame.init()
 screen = pygame.display.set_mode((ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT))
@@ -44,6 +47,9 @@ while True:
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             pygame.quit()
             sys.exit()
+
+            if web_process:
+                web_process.kill()
 
         if event.type in UPDATE_EVENTS:
             UPDATE_EVENTS[event.type]()
