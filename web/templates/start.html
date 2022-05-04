@@ -7,9 +7,17 @@
   </style>
 {% endblock %}
 {% block content %}
-    <h1>Set Root Password</h1>
-    <form method="post">
-        <p><input type=text name=password></p>
-        <p><input type=submit value=Login></p>
-    </form>
+    <div class="ui centered grid">
+      <div class="four wide column">
+        <h1>Set Root Password</h1>
+        <form class="ui form six wide" method="post">
+          <div class="field">
+            <input type=text name=password>
+          </div>
+          <button type=submit value=Login class="ui primary button">
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
 {% endblock %}
