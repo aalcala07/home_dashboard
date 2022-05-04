@@ -1,11 +1,15 @@
 from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages
-import bcrypt, os
+from utilities import generate_secret, store_password, check_password, is_registered
+from decouple import config
 
 app = Flask(__name__)
-app.secret_key = 'secret'
 
-passwords_dir = 'web/.passwords'
+FLASK_SECRET = config('FLASK_SECRET', default='', cast=str)
 
+if not FLASK_SECRET:
+    FLASK_SECRET = generate_secret()
+
+app.secret_key = FLASK_SECRET
 
 
 @app.route('/')
@@ -15,7 +19,7 @@ def index():
 @app.route('/start', methods=['GET', 'POST'])
 def start():
     
-    if os.path.exists(f"{passwords_dir}/root"):
+    if is_registered('root'):
         return redirect('/login')
 
     if request.method == 'POST':
@@ -28,7 +32,7 @@ def start():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-    if not os.path.exists(f"{passwords_dir}/root"):
+    if not is_registered('root'):
         return redirect('/start')
 
     if request.method == 'POST':
@@ -81,26 +85,6 @@ def is_logged_in():
     if 'username' in session:
         return True
 
-def check_password(username, password):
-    if not os.path.exists(f"{passwords_dir}/{username}"):
-        return False
-
-    f = open(f"{passwords_dir}/{username}", 'r')
-    hashed = f.read()
-    f.close()
-
-    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
-
-def store_password(username, password):
-    password = password.encode('utf-8')
-    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-
-    if not os.path.exists(passwords_dir):
-        os.mkdir(passwords_dir)
-
-    f = open(f"{passwords_dir}/{username}", 'w')
-    f.write(hashed.decode())
-    f.close()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
