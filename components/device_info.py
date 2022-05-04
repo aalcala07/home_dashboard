@@ -9,7 +9,7 @@ font = fonts.font_lg
 def draw(screen, rect, props):
 
     y_padding = (rect.height - (font.get_height() + font.get_height()))//2
-    ip_address = subprocess.run(['hostname', '-I'], capture_output=True, text=True).stdout.strip()
+    ip_address = subprocess.run(['hostname', '-I'], capture_output=True, text=True).stdout.strip().split()[0]
 
     # Draw IP Address
     ip_text = font.render(f'IP Address: {ip_address}', 1, colors.white)
