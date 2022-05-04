@@ -1,5 +1,5 @@
 from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages
-from utilities import generate_secret, store_password, check_password, is_registered
+from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key
 from decouple import config
 
 app = Flask(__name__)
@@ -60,13 +60,22 @@ def logout():
 def overview():
     if not is_logged_in():
         return redirect('/login')
-    return render_template('overview.html', page="overview")
 
-@app.route("/display")
+    return render_template('overview.html', page="overview", device_info=get_device_info(), display=get_display(), services=get_services())
+
+@app.route("/display", methods=['GET', 'POST'])
 def display():
     if not is_logged_in():
         return redirect('/login')
-    return render_template('display.html', page="display")
+    
+    if request.method == 'POST':
+        template = request.form['template']
+        template = '' if template == 'default' else template
+        set_config_key('TEMPLATE_CONFIG_FILE', template)
+        flash('Display settings saved. Please reboot your device.', 'success')
+        return redirect('/display')
+
+    return render_template('display.html', page="display", display=get_display(), templates=get_templates())
 
 @app.route("/services")
 def services():

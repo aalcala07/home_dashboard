@@ -14,7 +14,7 @@
 
     <div class="ui container" style="margin-top: 30px">
         {% for category, message in get_flashed_messages(with_categories=True) %}
-            <div class="ui message {% if category == 'error' %}negative{% endif %}">
+            <div class="ui message {% if category != 'message' %}{{ category }}{% endif %}">
                 <i class="close icon"></i>
                 <div class="header" style="text-transform: capitalize">
                     {{ category }}
@@ -41,12 +41,12 @@
                 <a href="/display" class="item {% if page == "display": %}active{% endif %}">
                   Display
                 </a>
-                <a href="/services" class="item {% if page == "services": %}active{% endif %}">
+                <!-- <a href="/services" class="item {% if page == "services": %}active{% endif %}">
                   Services
                 </a>
                 <a href="/device_info" class="item {% if page == "device_info": %}active{% endif %}">
                   Device Info
-                </a>
+                </a> -->
               </div>
             </div>
             <div class="twelve wide stretched column">
@@ -68,5 +68,7 @@
             .closest('.message')
             .transition('fade');
         });
+    
+    $('.ui.dropdown').dropdown();
         
 </script>

@@ -7,5 +7,44 @@
   </style>
 {% endblock %}
 {% block content %}
-  <h1>Overview</h1>
+
+  <div class="ui grid container padded">
+    <div class="eight wide column">
+      <h2>Overview</h2>
+    </div>
+  </div>
+
+  <div class="ui grid container padded">
+    <div class="eight wide column">
+      <h4>Device</h4>
+      <div class="ui list">
+        <div class="item"><strong>IP Address:</strong> {{ device_info.ip_address }}</div>
+        <div class="item"><strong>Uptime:</strong> {{ device_info.uptime }}</div>
+        <div class="item"><strong>Load Average:</strong> {{ device_info.load_average }}</div>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <h4>Display</h4>
+      <div class="ui list">
+        <div class="item"><strong>Screen Resolution:</strong> {{ display.resolution }}</div>
+        <div class="item"><strong>Template:</strong> {{ display.template }}</div>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <h4>Services</h4>
+      <div class="ui list">
+        {% for service in services %}
+        <div class="item">{{ service.service }}</div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="eight wide column">
+      <h4>Links</h4>
+      <div class="ui list">
+        <a class="item" href="https://github.com/aalcala07/home_dashboard" target="_blank">Github Repository</a>
+        <a class="item" href="https://homedashboard.aalcala.com/" target="_blank">Documentation</a>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}

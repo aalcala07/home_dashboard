@@ -48,7 +48,8 @@ def next_debug_color():
     return color
 
 def get_rows():
-    with open(config('TEMPLATE_CONFIG_FILE', 'template.json')) as json_file:
+    template_path = "templates/" + config('TEMPLATE_CONFIG_FILE') if config('TEMPLATE_CONFIG_FILE', '') else 'template.json'
+    with open(template_path) as json_file:
         grid_data = json.load(json_file)
 
     rows = []

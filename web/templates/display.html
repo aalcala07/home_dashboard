@@ -7,5 +7,48 @@
   </style>
 {% endblock %}
 {% block content %}
-  <h1>Display</h1>
+
+  <div class="ui grid container padded">
+    <div class="eight wide column">
+      <h2>Display</h2>
+    </div>
+  </div>
+
+  <div class="ui grid container padded">
+    <div class="sixteen wide column">
+      <h4>Configuration</h4>
+      <div class="ui list">
+        <div class="item"><strong>Screen Width:</strong> {{ display.screen_width }}</div>
+        <div class="item"><strong>Screen Height:</strong> {{ display.screen_height }}</div>
+        <div class="item"><strong>Grid Margin:</strong> {{ display.grid_margin | string }}</div>
+        <div class="item"><strong>Icon Scale:</strong> {{ display.icon_scale | string }}</div>
+        <div class="item"><strong>Font Scale:</strong> {{ display.font_scale | string }}</div>
+        <div class="item"><strong>Font Name:</strong> {{ display.font_name }}</div>
+        <div class="item"><strong>FPS:</strong> {{ display.fps | string }}</div>
+        <div class="item"><strong>Show Mouse:</strong> {{ 'true' if display.show_mouse else 'false' }}</div>
+        <div class="item"><strong>Show Device Info:</strong> {{ 'true' if display.show_device_info else 'false' }}</div>
+        <div class="item"><strong>Debug Grid:</strong> {{ 'true' if display.debug_grid else 'false' }}</div>
+      </div>
+    </div>
+    <div class="sixteen wide column">
+      <h4>Change Settings</h4>
+      <form class="ui form" method="post">
+        <div class="field">
+          <label>Template</label>
+          <select name="template" class="ui fluid dropdown">
+            {% for template in templates %}
+            <option value="{{ template.value }}" {% if display.template == template.value %} selected="selected" {% endif %}>{{ template.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type=submit class="ui primary button">
+          Update Settings
+        </button>
+        <div class="ui small blue message">
+          <i class="exclamation circle icon"></i> Reboot required for changes to take effect.
+        </div>
+      </form>
+    </div>
+  </div>
+
 {% endblock %}
