@@ -13,13 +13,13 @@
 <body>
 
     <div class="ui container" style="margin-top: 30px">
-        {% for message in get_flashed_messages(with_categories=True) %}
-            <div class="ui message">
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+            <div class="ui message {% if category == 'error' %}negative{% endif %}">
                 <i class="close icon"></i>
-                <div class="header">
-                    message[0]
+                <div class="header" style="text-transform: capitalize">
+                    {{ category }}
                 </div>
-                <p>{{ message[1] }}</p>
+                <p>{{ message }}</p>
             </div>
         {% endfor %}
         <div class="ui grid">
