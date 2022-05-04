@@ -73,8 +73,6 @@ def get_services():
 
 # Get display templates (not Flask templates)
 def get_templates():
-    files = os.listdir(templates_dir)
-
     templates = [
         {
             'name': 'Default',
@@ -82,11 +80,14 @@ def get_templates():
         }
     ]
 
-    for template_file in files:
-        templates.append({
-            'name': template_file,
-            'value': template_file
-        })
+    if os.path.exists(templates_dir):
+        files = os.listdir(templates_dir)
+    
+        for template_file in files:
+            templates.append({
+                'name': template_file,
+                'value': template_file
+            })
     
     return templates
 
