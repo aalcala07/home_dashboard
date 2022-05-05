@@ -64,18 +64,17 @@ python main.py
 
 ## Web Console
 
+![Home Dashboard Screnshot](home-dashboard-web-console-overview.png)
+
 You can view information about your device in the web console. This feature is disabled by default. To enable it just set `ENABLE_WEB_CONSOLE=1` in your `.env` file and relaunch the app. 
 
 Once the app launches, the web console will be accessible from anywhere on your network, simply navigate to the correct IP address in your browser and make sure to add port `5000`.
 
 <blockquote><b>IP Address</b>: Set <code>SHOW_DEVICE_INFO=1</code> in your <code>.env</code> to show your IP address on the bottom of your display.</blockquote>
 
-For example, if your device's IP address is `192.168.0.1`, you would need to enter `http://192.168.0.1:5000` in your browser of choice. Once there, set your password you will be automatically logged in. (This password is stored separately from the password you use to log into your Pi and does not need to be the same.)
+For example, if your device's IP address is `192.168.0.1`, you would need to enter `http://192.168.0.1:5000` in your browser of choice. Once there, set your password and you will be automatically logged in. (This password is stored separately from the password you use to log into your Pi and does not need to be the same.)
 
 <blockquote><b>Forgot your password?</b>: To reset your password, first find the <code>root</code> file in the <code>web/.passwords</code> folder and delete it. Then go back to the web console and enter your new password.</blockquote>
-
-
-![Home Dashboard Screnshot](home-dashboard-web-console-overview.png)
 
 
 ## Customizing
