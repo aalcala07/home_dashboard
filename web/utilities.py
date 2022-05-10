@@ -1,4 +1,4 @@
-import secrets, os, bcrypt, subprocess, json, math
+import secrets, os, bcrypt, subprocess, json, math, shutil
 from decouple import config
 
 passwords_dir = 'web/.passwords'
@@ -39,17 +39,20 @@ def is_registered(username):
     return os.path.exists(f"{passwords_dir}/{username}")
 
 def get_device_info():
-    
+
     with open('/proc/uptime', 'r') as f:
         uptime_seconds = float(f.readline().split()[0])
     uptime = human_time_from_seconds(uptime_seconds)
 
-    load_average = os.getloadavg()
+    one_minute, five_minute, fifteen_minute = os.getloadavg()
+
+    total, used, free = shutil.disk_usage("/")
 
     return {
         "ip_address": subprocess.run(['hostname', '-I'], capture_output=True, text=True).stdout.strip().split()[0],
         "uptime": uptime,
-        "load_average": ', '.join([str(load_average[0]), str(load_average[1]), str(load_average[2])])
+        "load_average": ', '.join([str(one_minute), str(five_minute), str(fifteen_minute)]),
+        "disk_usage": "%d / %d GB" % (used // (2**30), total // (2**30))
     }
 
 def human_time_from_seconds(seconds):
