@@ -1,4 +1,4 @@
-import secrets, os, bcrypt, subprocess, json
+import secrets, os, bcrypt, subprocess, json, math
 from decouple import config
 
 passwords_dir = 'web/.passwords'
@@ -39,13 +39,37 @@ def is_registered(username):
     return os.path.exists(f"{passwords_dir}/{username}")
 
 def get_device_info():
-    uptime_parts = subprocess.run(['uptime'], capture_output=True, text=True).stdout.strip().split()
+    
+    with open('/proc/uptime', 'r') as f:
+        uptime_seconds = float(f.readline().split()[0])
+    uptime = human_time_from_seconds(uptime_seconds)
+
+    load_average = os.getloadavg()
 
     return {
         "ip_address": subprocess.run(['hostname', '-I'], capture_output=True, text=True).stdout.strip().split()[0],
-        "uptime": uptime_parts[2].strip(','),
-        "load_average": " ".join(uptime_parts[7:10])
+        "uptime": uptime,
+        "load_average": ', '.join([str(load_average[0]), str(load_average[1]), str(load_average[2])])
     }
+
+def human_time_from_seconds(seconds):
+    seconds_in_day = 24*60*60
+    seconds_in_hour = 60*60
+    seconds_in_minute = 60
+
+    if (seconds >= seconds_in_day):
+        days = math.floor(seconds / seconds_in_day)
+        return str(days) + " " + ("day" if days == 1 else "days")
+
+    if (seconds >= seconds_in_hour):
+        hours = math.floor(seconds / seconds_in_hour)
+        return str(hours) + " " + ("hour" if hours == 1 else "hours")
+
+    if (seconds >= seconds_in_minute):
+        minutes = math.floor(seconds / seconds_in_minute)
+        return str(minutes) + " " + ("minute" if minutes == 1 else "minutes")
+
+    return 'less than 1 minute'
 
 def get_display():
 
