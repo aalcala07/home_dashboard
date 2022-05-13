@@ -4,7 +4,7 @@ from decouple import config
 if not os.path.exists('cache'):
     os.mkdir('cache')
 
-ENABLE_WEB_CONSOLE = config('ENABLE_WEB_CONSOLE', default=False, cast=bool)
+ENABLE_CONTROL_PANEL = config('ENABLE_CONTROL_PANEL', default=False, cast=bool)
 
 def start_web():
     # return subprocess.Popen(['python', 'web/app.py'])
@@ -18,7 +18,7 @@ def start_display():
 
 
 
-if ENABLE_WEB_CONSOLE:
+if ENABLE_CONTROL_PANEL:
     print('starting web')
     web_process = start_web()
     
@@ -43,6 +43,6 @@ while running is True:
         print('restarting display')
         display_process = start_display()
 
-    if ENABLE_WEB_CONSOLE and web_process.poll() != 1:
+    if ENABLE_CONTROL_PANEL and web_process.poll() != 1:
         print('restarting web server')
         web_process = start_web()
