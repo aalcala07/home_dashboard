@@ -64,7 +64,7 @@ python main.py
 
 ## Control Panel
 
-![Home Dashboard Screnshot](home-dashboard-web-console-overview.png)
+![Control Panel Screenshot](home-dashboard-control-panel.png)
 
 You can view information about your device in the control panel. This feature is disabled by default. To enable it just set `ENABLE_CONTROL_PANEL=1` in your `.env` file and relaunch the app. 
 
