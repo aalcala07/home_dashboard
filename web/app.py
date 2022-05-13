@@ -1,7 +1,7 @@
 from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages
 from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key
 from decouple import config
-import os, signal, sys
+import os, signal, time
 
 app = Flask(__name__)
 
@@ -11,7 +11,9 @@ if not FLASK_SECRET:
     FLASK_SECRET = generate_secret()
 
 app.secret_key = FLASK_SECRET
+app.templates_auto_reload = True
 
+should_shutdown = False
 
 @app.route('/')
 def index():
@@ -96,15 +98,25 @@ def device_info():
         return redirect('/login')
     return render_template('device_info.html', page="device_info")
 
-@app.route("/restart")
+@app.route("/restart", methods=['GET', 'POST'])
 def restart():
-    f = open('cache/.display_pid', 'r')
-    pid = int(f.read())
-    os.kill(pid, signal.SIGTERM)
-    # sys.exit()
-    exit(0)
-    # flash('Display is restarting', 'success')
-    # return redirect('/overview')
+
+    if request.method == 'POST':
+        f = open('cache/.display_pid', 'r')
+        pid = int(f.read())
+        os.kill(pid, signal.SIGTERM)
+        global should_shutdown
+        should_shutdown = True
+        return {
+            "status": "success"
+        }
+    
+    return render_template('restart.html')
+
+@app.route("/after-restart")
+def afterRestart():
+    flash('System restarted successfully', 'success')
+    return redirect('/')
 
 def is_logged_in():
     if 'username' in session:
@@ -113,3 +125,11 @@ def is_logged_in():
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
+
+
+while True:
+    if should_shutdown is True:
+        f = open('cache/.web_pid', 'r')
+        pid = int(f.read())
+        os.kill(pid, signal.SIGTERM)
+    time.sleep(1)
