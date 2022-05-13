@@ -1,58 +1,48 @@
-import sys, pygame, os, subprocess
-import logging
+import os, subprocess, signal, time
 from decouple import config
-import ui, colors
-import update
-
-CAPTION = config('CAPTION', default='Home Dashboard', cast=str)
-FPS = config('FPS', default=1, cast=int)
-
-if config('ENABLE_WEB_CONSOLE', default=False, cast=bool):
-    web_process = subprocess.Popen(['python', 'web/app.py'])
-
-pygame.init()
-screen = pygame.display.set_mode((ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT))
-pygame.display.set_caption(CAPTION)
-clock = pygame.time.Clock()
 
 if not os.path.exists('cache'):
     os.mkdir('cache')
 
-# Hide Mouse
-pygame.mouse.set_visible(config('SHOW_MOUSE', default=False, cast=bool))
+ENABLE_WEB_CONSOLE = config('ENABLE_WEB_CONSOLE', default=False, cast=bool)
 
-UPDATE_EVENTS = {}
-for service, update_frequency in update.list_active_services():
-    if (callback := update.get_update_callback(service)):
-        logging.info(f'Found callback for {service}')
-        event_type = pygame.event.custom_type()
-        UPDATE_EVENTS[event_type] = callback
-        if update_frequency:
-            pygame.time.set_timer(event_type, 1000 * update_frequency)
-        if config('UPDATE_ON_STARTUP', default=False, cast=bool):
-            logging.info(f'Updating {service} data')
-            callback()
-    else:
-        logging.warning(f'No update callback found for {service}')
+def start_web():
+    # return subprocess.Popen(['python', 'web/app.py'])
+    return subprocess.Popen(['python', 'web/app.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-while True:
+def start_display():
+    display_process = subprocess.Popen(['python', 'display.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    f = open('cache/.display_pid', 'w')
+    f.write(str(display_process.pid))
+    return display_process
 
-    screen.fill(colors.bg_color)
 
-    for row_index in range(len(ui.rows)):
-        ui.draw_row(screen, row_index)
 
-    for event in pygame.event.get():
+if ENABLE_WEB_CONSOLE:
+    print('starting web')
+    web_process = start_web()
+    
+print('starting display')
+display_process = start_display()
 
-        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-            pygame.quit()
-            sys.exit()
+time.sleep(3)
 
-            if web_process:
-                web_process.kill()
+running = True
 
-        if event.type in UPDATE_EVENTS:
-            UPDATE_EVENTS[event.type]()
+def kill(signum, stackframe):
+    global running
+    running = False
 
-    pygame.display.update()
-    clock.tick(FPS)
+signal.signal(signal.SIGINT, kill)
+signal.signal(signal.SIGTERM, kill)
+
+while running is True:
+    time.sleep(1)
+
+    if display_process.poll() is not None:
+        print('restarting display')
+        display_process = start_display()
+
+    if ENABLE_WEB_CONSOLE and web_process.poll() != 1:
+        print('restarting web server')
+        web_process = start_web()

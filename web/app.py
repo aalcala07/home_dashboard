@@ -1,6 +1,7 @@
 from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages
 from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key
 from decouple import config
+import os, signal, sys
 
 app = Flask(__name__)
 
@@ -67,15 +68,21 @@ def overview():
 def display():
     if not is_logged_in():
         return redirect('/login')
+
+    display = get_display()
     
     if request.method == 'POST':
+        for config in display['configs']:
+            value = request.form['configs[' + config['name'] + ']']
+            set_config_key(config['name'].upper(), value)
+
         template = request.form['template']
         template = '' if template == 'default' else template
         set_config_key('TEMPLATE_CONFIG_FILE', template)
-        flash('Display settings saved. Please reboot your device.', 'success')
-        return redirect('/display')
+        flash('Display settings saved.', 'success')
+        return redirect('/restart')
 
-    return render_template('display.html', page="display", display=get_display(), templates=get_templates())
+    return render_template('display.html', page="display", display=display, templates=get_templates())
 
 @app.route("/services")
 def services():
@@ -89,6 +96,15 @@ def device_info():
         return redirect('/login')
     return render_template('device_info.html', page="device_info")
 
+@app.route("/restart")
+def restart():
+    f = open('cache/.display_pid', 'r')
+    pid = int(f.read())
+    os.kill(pid, signal.SIGTERM)
+    # sys.exit()
+    exit(0)
+    # flash('Display is restarting', 'success')
+    # return redirect('/overview')
 
 def is_logged_in():
     if 'username' in session:

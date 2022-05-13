@@ -77,20 +77,74 @@ def human_time_from_seconds(seconds):
 def get_display():
 
     template = config('TEMPLATE_CONFIG_FILE', default='Default', cast=str)
+    display_configs = [
+        {
+            'name': 'screen_width',
+            'label': 'Screen Width',
+            'value': config('SCREEN_WIDTH', default=0, cast=int),
+            'type': 'int'
+        },
+        {
+            'name': 'screen_height',
+            'label': 'Screen Height',
+            'value': config('SCREEN_HEIGHT', default=0, cast=int),
+            'type': 'int'
+        },
+        {
+            'name': 'grid_margin',
+            'label': 'Grid Margin',
+            'value': config('GRID_MARGIN', default=0, cast=int),
+            'type': 'int'
+        },
+        {
+            'name': 'icon_scale',
+            'label': 'Icon Scale',
+            'value': config('ICON_SCALE', default=0, cast=int),
+            'type': 'float'
+        },
+        {
+            'name': 'font_scale',
+            'label': 'Font Scale',
+            'value': config('FONT_SCALE', default=0, cast=float),
+            'type': 'float'
+        },
+        {
+            'name': 'font_name',
+            'label': 'Font Name',
+            'value': config('FONT_NAME', default="", cast=str),
+            'type': 'str'
+        },
+        {
+            'name': 'fps',
+            'label': 'FPS',
+            'value': config('FPS', default=0, cast=int),
+            'type': 'int'
+        },
+        {
+            'name': 'show_mouse',
+            'label': 'Show Mouse',
+            'value': config('SHOW_MOUSE', default=False, cast=bool),
+            'type': 'bool'
+        },
+        {
+            'name': 'show_device_info',
+            'label': 'Show Device Info',
+            'value': config('SHOW_DEVICE_INFO', default=False, cast=bool),
+            'type': 'bool'
+        },
+        {
+            'name': 'debug_grid',
+            'label': 'Debug Grid',
+            'value': config('DEBUG_GRID', default=False, cast=bool),
+            'type': 'bool'
+        },
+    ]
+    
 
     return {
         "resolution": config('SCREEN_WIDTH', default='', cast=str) + " x " + config('SCREEN_HEIGHT', default='', cast=str),
         "template": template if template else 'Default',
-        "screen_width": config('SCREEN_WIDTH', default=0, cast=int),
-        "screen_height": config('SCREEN_HEIGHT', default=0, cast=int),
-        "grid_margin": config('GRID_MARGIN', default=0, cast=int),
-        "icon_scale": config('ICON_SCALE', default=0, cast=float),
-        "font_scale": config('FONT_SCALE', default=0, cast=float),
-        "font_name": config('FONT_NAME', default="", cast=str),
-        "fps": config('FPS', default=0, cast=int),
-        "show_mouse": config('SHOW_MOUSE', default=False, cast=bool),
-        "show_device_info": config('SHOW_DEVICE_INFO', default=False, cast=bool),
-        "debug_grid": config('DEBUG_GRID', default=False, cast=bool)
+        "configs": display_configs
     }
 
 def get_services():
