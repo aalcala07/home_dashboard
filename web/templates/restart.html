@@ -1,4 +1,4 @@
-{% extends "layouts/app.html" %}
+{% extends "layouts/guest-centered.html" %}
 {% block title %}Restarting - Home Dashboard{% endblock %}
 {% block head %}
   {{ super() }}
@@ -6,10 +6,9 @@
     
   </style>
 {% endblock %}
-{% block content %}
+{% block innercontent %}
     <div id="restarting">
-        <h1>Restarting System</h1>
-        <p>Please wait...</p>
+        <h3>Restarting system...</h3>
         <div class="ui active inline loader"></div>
     </div>
 

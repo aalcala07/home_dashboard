@@ -13,36 +13,33 @@
 <body>
 
     <div class="ui container" style="margin-top: 30px">
-        {% for category, message in get_flashed_messages(with_categories=True) %}
-            <div class="ui message {% if category != 'message' %}{{ category }}{% endif %}">
-                <i class="close icon"></i>
-                <div class="header" style="text-transform: capitalize">
-                    {{ category }}
-                </div>
-                <p>{{ message }}</p>
+        {% include "components/messages.html" %}
+        <div class="ui stackable secondary menu">
+          <div class="item">
+            <h1>
+              <span style="font-size: 12px; display: block; margin: 0; padding: 0; line-height: 1;">Home Dashboard</span>
+              <span>Control Panel</span>
+            </h1>
+          </div>
+          <div class="right ui secondary menu">
+            <div class="item">
+              <span>Logged in as <strong>{{ session['username'] }}</strong></span>
             </div>
-        {% endfor %}
-        <div class="ui grid">
-            <div class="thirteen wide column">
-                <h1>
-                  <span style="font-size: 12px; display: block; margin: 0; padding: 0; line-height: 1;">Home Dashboard</span>
-                  <span>Control Panel</span>
-                </h1>
-            </div>
-            <div class="three wide column right aligned">
-                <span>Logged in as <strong>{{ session['username'] }}</strong></span>
-                <a href="/logout">Logout</a>
-            </div>
+          </div>
         </div>
-            
-        <div class="ui grid">
-            <div class="four wide column">
-              <div class="ui vertical fluid tabular menu">
+        
+        <!-- <div class="ui grid"> -->
+        <div class="ui stackable four column grid">
+            <div class="five wide column">
+              <div class="ui vertical fluid menu">
                 <a href="/" class="item {% if page == "overview": %}active{% endif %}">
                   Overview
                 </a>
                 <a href="/display" class="item {% if page == "display": %}active{% endif %}">
                   Display
+                </a>
+                <a href="/logout" class="item">
+                  Logout
                 </a>
                 <!-- <a href="/services" class="item {% if page == "services": %}active{% endif %}">
                   Services
@@ -52,7 +49,7 @@
                 </a> -->
               </div>
             </div>
-            <div class="twelve wide stretched column">
+            <div class="eleven wide stretched column">
               <div class="ui segment">
                 {% block content %}{% endblock %}
               </div>
@@ -76,38 +73,5 @@
 
     $('.ui.radio.checkbox')
       .checkbox()
-
-    $('document').ready(async () => {
-      if ($('#restarting').length) {
-        console.log('restarting loaded')
-
-        $.ajax({
-          url: '/restart',
-          method: 'post',
-        })
-
-        await new Promise(r => setTimeout(r, 200));
-
-        let timeout = setInterval(() => {
-          $.ajax({
-            url: '/',
-            timeout: 500,
-          })
-            .done( (response, status) => {
-              console.log('setting window location')
-              window.location = '/after-restart'
-            })
-            .fail( error => {
-              // Do nothing
-              console.log(error)
-            })
-        }, 1000)
-        
-      }
-      
-    })
-
-
-
         
 </script>

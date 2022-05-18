@@ -1,23 +1,20 @@
-{% extends "layouts/guest.html" %}
+{% extends "layouts/guest-centered.html" %}
 {% block title %}Start - Home Dashboard{% endblock %}
 {% block head %}
   {{ super() }}
-  <style type="text/css">
-    
-  </style>
 {% endblock %}
-{% block content %}
-    <div class="ui centered grid">
-      <div class="four wide column">
-        <h1>Set Root Password</h1>
-        <form class="ui form six wide" method="post">
-          <div class="field">
-            <input type=text name=password>
-          </div>
-          <button type=submit value=Login class="ui primary button">
-            Login
-          </button>
-        </form>
-      </div>
+{% block innercontent %}
+  <h1>
+    <span style="font-size: 14px; display: block; margin: 0; padding: 0; line-height: 1;">Home Dashboard</span>
+    <span>Control Panel</span>
+  </h1>
+  <form class="ui form six wide" method="post">
+    <div class="field">
+      <label>Enter a password to get started:</label>
+      <input type=text name=password>
     </div>
+    <button type=submit value=Login class="ui fluid large primary submit button">
+      Login
+    </button>
+  </form>
 {% endblock %}

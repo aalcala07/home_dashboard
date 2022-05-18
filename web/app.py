@@ -81,7 +81,6 @@ def display():
         template = request.form['template']
         template = '' if template == 'default' else template
         set_config_key('TEMPLATE_CONFIG_FILE', template)
-        flash('Display settings saved.', 'success')
         return redirect('/restart')
 
     return render_template('display.html', page="display", display=display, templates=get_templates())

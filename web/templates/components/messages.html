@@ -1,0 +1,9 @@
+{% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="ui message {{ category }}">
+        <i class="close icon"></i>
+        <div class="header" style="text-transform: capitalize">
+            {{ category }}
+        </div>
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}

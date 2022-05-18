@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% block head %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,21 +11,50 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
 </head>
+{% endblock%}
 <body>
 
-    <div class="ui container" style="margin-top: 30px;">
-        {% for category, message in get_flashed_messages(with_categories=True) %}
-            <div class="ui message {% if category == 'error' %}negative{% endif %}">
-                <i class="close icon"></i>
-                <div class="header" style="text-transform: capitalize">
-                    {{ category }}
-                </div>
-                <p>{{ message }}</p>
-            </div>
-        {% endfor %}
-
-        {% block content %}{% endblock %}
-    </div>
+    {% block content %}{% endblock %}
     
 </body>
 </html>
+
+<script type="text/javascript">
+
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+            .closest('.message')
+            .transition('fade');
+        });
+
+    $('document').ready(async () => {
+      if ($('#restarting').length) {
+        console.log('restarting loaded')
+
+        $.ajax({
+          url: '/restart',
+          method: 'post',
+        })
+
+        await new Promise(r => setTimeout(r, 200));
+
+        let timeout = setInterval(() => {
+          $.ajax({
+            url: '/',
+            timeout: 500,
+          })
+            .done( (response, status) => {
+              console.log('setting window location')
+              window.location = '/after-restart'
+            })
+            .fail( error => {
+              // Do nothing
+              console.log(error)
+            })
+        }, 1000)
+        
+      }
+      
+    })
+</script>

@@ -1,0 +1,27 @@
+{% extends "layouts/guest.html" %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="ui middle aligned center aligned grid container">
+    <div class="column">
+        {% include "components/messages.html" %}
+        {% block innercontent %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
