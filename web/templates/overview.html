@@ -3,7 +3,16 @@
 {% block head %}
   {{ super() }}
   <style type="text/css">
-    
+    .statistics {
+      padding: 20px 0 10px;
+      border: 1px solid #e0e0e0;
+      border-left: none;
+      border-right: none;
+      border-radius: 30px;
+    }
+    .statistic .label {
+      margin-bottom: 10px;
+    }
   </style>
 {% endblock %}
 {% block content %}
@@ -14,35 +23,25 @@
     </div>
   </div>
 
-  <div class="ui stackable three column grid container" style="margin-bottom: 10px;">
-    <div class="column center aligned">
-      <div class="ui mini statistic">
+  <div class="ui container" style="margin: 20px 0 30px">
+    <div class="ui three stackable mini statistics">
+      <div class="statistic">
+        <div class="label">Uptime</div>
         <div class="value">
           <i class="arrow up icon"></i> {{ device_info.uptime }}
         </div>
-        <div class="label">
-          Uptime
-        </div>
       </div>
-    </div>
-    <div class="column center aligned">
-      <div class="ui mini statistic">
+      <div class="statistic">
+        <div class="label">Space Available</div>
         <div class="value">
-          <i class="hdd icon"></i> {{ device_info.space_available }}
-        </div>
-        <div class="label">
-          Space Available
-        </div>
+            <i class="hdd icon"></i> {{ device_info.space_available }}
+          </div>
       </div>
-    </div>
-    <div class="column center aligned">
-      <div class="ui mini statistic">
+      <div class="statistic">
+        <div class="label">Load Avg (15 min)</div>
         <div class="value">
-          {{ device_info.load_average_one_min }}/{{ device_info.load_average_fifteen_min }}
-        </div>
-        <div class="label">
-          Load Avg (1 min/15 min)
-        </div>
+            {{ device_info.load_average_fifteen_min }}
+          </div>
       </div>
     </div>
   </div>

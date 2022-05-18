@@ -69,11 +69,11 @@ def human_time_from_seconds(seconds):
 
     if (seconds >= seconds_in_hour):
         hours = math.floor(seconds / seconds_in_hour)
-        return str(hours) + " " + ("hour" if hours == 1 else "hr")
+        return str(hours) + " " + ("hour" if hours == 1 else "hours")
 
     if (seconds >= seconds_in_minute):
         minutes = math.floor(seconds / seconds_in_minute)
-        return str(minutes) + " " + ("minute" if minutes == 1 else "min")
+        return str(minutes) + " " + ("minute" if minutes == 1 else "minutes")
 
     return 'less than 1 minute'
 
