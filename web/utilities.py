@@ -44,15 +44,18 @@ def get_device_info():
         uptime_seconds = float(f.readline().split()[0])
     uptime = human_time_from_seconds(uptime_seconds)
 
-    one_minute, five_minute, fifteen_minute = os.getloadavg()
+    one_minute, five_minutes, fifteen_minutes = os.getloadavg()
 
     total, used, free = shutil.disk_usage("/")
 
     return {
         "ip_address": subprocess.run(['hostname', '-I'], capture_output=True, text=True).stdout.strip().split()[0],
         "uptime": uptime,
-        "load_average": ', '.join([str(one_minute), str(five_minute), str(fifteen_minute)]),
-        "disk_usage": "%d / %d GB" % (used // (2**30), total // (2**30))
+        "load_average_one_min": str(one_minute),
+        "load_average_five_min": str(five_minutes),
+        "load_average_fifteen_min": str(fifteen_minutes),
+        "disk_usage": "%d / %d GB" % (used // (2**30), total // (2**30)),
+        "space_available": "%d GB" % (free // (2**30))
     }
 
 def human_time_from_seconds(seconds):
@@ -66,11 +69,11 @@ def human_time_from_seconds(seconds):
 
     if (seconds >= seconds_in_hour):
         hours = math.floor(seconds / seconds_in_hour)
-        return str(hours) + " " + ("hour" if hours == 1 else "hours")
+        return str(hours) + " " + ("hour" if hours == 1 else "hr")
 
     if (seconds >= seconds_in_minute):
         minutes = math.floor(seconds / seconds_in_minute)
-        return str(minutes) + " " + ("minute" if minutes == 1 else "minutes")
+        return str(minutes) + " " + ("minute" if minutes == 1 else "min")
 
     return 'less than 1 minute'
 

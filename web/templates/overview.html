@@ -13,15 +13,45 @@
       <h2>Overview</h2>
     </div>
   </div>
+
+  <div class="ui stackable three column grid container" style="margin-bottom: 10px;">
+    <div class="column center aligned">
+      <div class="ui mini statistic">
+        <div class="value">
+          <i class="arrow up icon"></i> {{ device_info.uptime }}
+        </div>
+        <div class="label">
+          Uptime
+        </div>
+      </div>
+    </div>
+    <div class="column center aligned">
+      <div class="ui mini statistic">
+        <div class="value">
+          <i class="hdd icon"></i> {{ device_info.space_available }}
+        </div>
+        <div class="label">
+          Space Available
+        </div>
+      </div>
+    </div>
+    <div class="column center aligned">
+      <div class="ui mini statistic">
+        <div class="value">
+          {{ device_info.load_average_one_min }}/{{ device_info.load_average_fifteen_min }}
+        </div>
+        <div class="label">
+          Load Avg (1 min/15 min)
+        </div>
+      </div>
+    </div>
+  </div>
   
-  <div class="ui stackable four column grid padded container">
+  <div class="ui stackable one column grid padded container">
     <div class="eight wide column">
-      <h4>Device</h4>
+      <h4>IP Address</h4>
       <div class="ui list">
-        <div class="item"><strong>IP Address:</strong> {{ device_info.ip_address }}</div>
-        <div class="item"><strong>Uptime:</strong> {{ device_info.uptime }}</div>
-        <div class="item"><strong>Load Average:</strong> {{ device_info.load_average }}</div>
-        <div class="item"><strong>Disk Usage:</strong> {{ device_info.disk_usage }}</div>
+        <div class="item">{{ device_info.ip_address }}</div>
       </div>
     </div>
     <div class="eight wide column">
