@@ -6,16 +6,18 @@ import logging
 OPEN_WEATHER_MAP_API_KEY = config('OPEN_WEATHER_MAP_API_KEY', default='', cast=str)
 OPEN_WEATHER_MAP_API_URL = "https://api.openweathermap.org"
 
+with open('cache/services.json') as json_file:
+    service_config = json.load(json_file)
+configs = [service['configs'] for service in service_config['services'] if service['service'] == 'weather'][0]
+
 # Request data from API
 def update():
 
     if not OPEN_WEATHER_MAP_API_KEY or OPEN_WEATHER_MAP_API_KEY == '':
         logging.error('Cannot fetch weather. Missing OPEN_WEATHER_MAP_API_KEY')
         return
-
-    params = get_params()
     
-    for location in params['locations']:
+    for location in locations():
 
         logging.info('Fetching weather data for ' + location['name'])
 
@@ -88,3 +90,12 @@ def get_params():
             location.setdefault('long', config(location['name'].upper() + '_LONG', cast=float, default=-97.75409570782983))
 
     return params
+
+def config(name):
+    return [config['value'] for config in configs if config['name'] == name][0]
+
+
+def locations():
+    with open('cache/locations.json') as json_file:
+        locations_config = json.load(json_file)
+    return [location for location in locations_config['locations'] if location['name'] in config('locations')]

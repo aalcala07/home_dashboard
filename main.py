@@ -1,8 +1,14 @@
-import os, subprocess, signal, time
+import os, subprocess, signal, time, shutil
 from decouple import config
 
 if not os.path.exists('cache'):
     os.mkdir('cache')
+
+if not os.path.exists('cache/services.json'):
+    shutil.copy('services.json', 'cache/services.json')
+
+if not os.path.exists('cache/locations.json'):
+    shutil.copy('locations.json', 'cache/locations.json')
 
 ENABLE_CONTROL_PANEL = config('ENABLE_CONTROL_PANEL', default=False, cast=bool)
 

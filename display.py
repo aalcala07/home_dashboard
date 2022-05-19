@@ -14,13 +14,14 @@ clock = pygame.time.Clock()
 pygame.mouse.set_visible(config('SHOW_MOUSE', default=False, cast=bool))
 
 UPDATE_EVENTS = {}
-for service, update_frequency in update.list_active_services():
+for service, configs in update.list_active_services():
     if (callback := update.get_update_callback(service)):
         logging.info(f'Found callback for {service}')
         event_type = pygame.event.custom_type()
         UPDATE_EVENTS[event_type] = callback
-        if update_frequency:
-            pygame.time.set_timer(event_type, 1000 * update_frequency)
+        update_interval = next((config['value'] for config in configs if config['name'] == 'update_interval_seconds'), None)
+        if update_interval :
+            pygame.time.set_timer(event_type, 1000 * update_interval)
         if config('UPDATE_ON_STARTUP', default=False, cast=bool):
             logging.info(f'Updating {service} data')
             callback()

@@ -4,17 +4,15 @@
             "name": "Weather",
             "service": "weather",
             "description": "Gets the current weather and forecast.",
-            "update_interval_seconds": 300,
-            "locations": [
-                {
-                    "name": "local"
-                }
-            ],
             "icon": "cloud",
             "configs": [
                 {
                     "name": "update_interval_seconds",
                     "value": 300
+                },
+                {
+                    "name": "locations",
+                    "value": "local"
                 }
             ]
         },
@@ -22,7 +20,6 @@
             "name": "Is It Friday",
             "service": "is_it_friday",
             "description": "Checks to see if it's Friday.",
-            "update_interval_seconds": 300,
             "icon": "calendar alternate outline",
             "configs": [
                 {

@@ -19,7 +19,10 @@ def draw(screen, rect, props):
     weather_data = weather.get(props['location'])
 
     if not weather_data:
-        # TODO: Add loading text/animation
+        text = fonts.font_4xl.render('No weather data', 1, colors.white)
+        text_rect = text.get_rect()
+        text_rect.center = (rect.x + rect.width//2, rect.y + rect.height//2)
+        screen.blit(text, text_rect)
         return
 
     current_weather_content_width = rect.width*4//16

@@ -3,9 +3,9 @@ from importlib import import_module
 from decouple import config
 
 def list_active_services():
-    with open(config('SERVICES_CONFIG_FILE', 'services.json')) as json_file:
+    with open(config('SERVICES_CONFIG_FILE', 'cache/services.json')) as json_file:
         grid_data = json.load(json_file)
-    services = [(row.get('service'), row.get('update_interval_seconds', 0)) for row in grid_data['services'] if row.get('service')]
+    services = [(row.get('service'), row.get('configs', [])) for row in grid_data['services'] if row.get('service') and row.get('enabled') is True]
     return services
 
 #TODO: refactor this and the similar code in ui.py to a generic get_callback()
@@ -15,7 +15,8 @@ def get_update_callback(service_name):
 
 if __name__ == "__main__":
     services = list_active_services()
-    for service, update_interval in services:
+    for service, configs in services:
+        update_interval = next((config['value'] for config in configs if config.name == 'update_interval_seconds'), None)
         callback = get_update_callback(service)
         if callback:
             if update_interval:
