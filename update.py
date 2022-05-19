@@ -3,7 +3,7 @@ from importlib import import_module
 from decouple import config
 
 def list_active_services():
-    with open(config('SERVICES_CONFIG_FILE', 'cache/services.json')) as json_file:
+    with open('cache/services.json') as json_file:
         grid_data = json.load(json_file)
     services = [(row.get('service'), row.get('configs', [])) for row in grid_data['services'] if row.get('service') and row.get('enabled') is True]
     return services

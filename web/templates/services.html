@@ -21,7 +21,6 @@
           <form action="/services/{{ service['service'] }}/toggle" method="POST">
             <div class="ui toggle checkbox">
               <input class="service-toggle" type="checkbox" name="enable" {% if service['enabled'] %} checked {% endif %}>
-              <label>Enable</label>
             </div>
           </form>
         </div>

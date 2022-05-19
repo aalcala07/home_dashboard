@@ -54,21 +54,19 @@ pip install -r requirements.txt
 ```
 cp .env.example .env
 ```
-5. Edit the `.env` file and copy your API key to `OPEN_WEATHER_MAP_API_KEY`
-6. Change the `LOCATION_LAT` and `LOCATION_LONG` (go to Google Maps and right click your city or any point on the map to get coordinates)
-7. Change the `SCREEN_WIDTH` and `SCREEN_HEIGHT` to match your screen resolution
-8. Launch the app:
+5. Edit the `.env` file and change `SCREEN_WIDTH` and `SCREEN_HEIGHT` to match your screen resolution
+6. Launch the app:
 ```
 python main.py
 ```
+7. Open the control panel in your web browser and go to Services where you can enable and configure the weather service.
+
 
 ## Control Panel
 
 ![Control Panel Screenshot](home-dashboard-control-panel.png)
 
-You can view information about your device in the control panel. This feature is disabled by default. To enable it just set `ENABLE_CONTROL_PANEL=1` in your `.env` file and relaunch the app. 
-
-Once the app launches, the control panel will be accessible from anywhere on your network, simply navigate to the correct IP address in your browser and make sure to add port `5000`.
+You can view information about your device in the control panel from anywhere on your network, simply navigate to the correct IP address in your browser and make sure to add port `5000`.
 
 <blockquote><b>IP Address</b>: Set <code>SHOW_DEVICE_INFO=1</code> in your <code>.env</code> to show your IP address on the bottom of your display.</blockquote>
 
@@ -92,39 +90,17 @@ The following settings can be changed in the `.env` file without writing any cod
 - `DEBUG_GRID` - Shows colored grid for debuging
 - `UPDATE_ON_STARTUP` - Whether to trigger the update function on all services at startup
 - `TEMPLATE_CONFIG_FILE` - Specifiy which file to use for the template config. All custom templates must go inside of the `/templates` folder.
-- `SERVICES_CONFIG_FILE` - Specify which file to use for the services config.
 
 ## Getting Weather for Multiple Locations
 
-By default, weather data is retrieved for only one location. You can retrieve data for multiple locations by adding to the `services.json` file.
+If you wish to retrieve weather data for multiple locations you can do so by configuring the weather service in the control panel. Simply check each location and the weather service will get the weather at the set interval.
 
-Under locations, add another object to the array like so:
+To add or change locations, edit `cache/locations.json`. You will also need to change the location in the template in order for the correct weather to show on the display.
 
-```
-"locations": [
-    {
-        "name": "local"
-    },
-    {
-        "name": "chicago",
-        "lat": 41.97571706813654,
-        "long": -87.71617764143481
-    }
-]
-```
+<blockquote><b>Note</b>: An API request is sent for each location, so you may want to adjust the update interval to avoid throttling.</blockquote>
 
-You can also add the coordinates in the `.env` if you don't want to add them to `services.json` so that they aren't version controlled:
 
-```
-chicago_lat=41.97571706813654
-chicago_long=-87.71617764143481
-```
-
-Finally, update the `location` field for second weather component in `template.json`.
-
-<blockquote><b>Note</b>: An API request is sent for each location, so you may want to adjust <code>update_interval_seconds</code> in <code>services.json</code> to avoid throttling.</blockquote>
-
-### Making Code Changes
+## Making Code Changes
 
 You should create a fork of the repo if you want to make changes. You may also want to create a deploy key to make it easier to pull changes to your Raspberry Pi if you are editing code on another computer.
 

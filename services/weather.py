@@ -73,25 +73,6 @@ def daily(location_name):
 
     return data['daily']
 
-def get_params():
-    with open(config('SERVICES_CONFIG_FILE', 'services.json')) as json_file:
-        service_config = json.load(json_file)
-
-    for service in service_config['services']:
-        if service['service'] == 'weather':
-            params = service
-    
-    if not params:
-        logging.error('Unable to find weather service config.')
-        return
-    
-    if 'locations' in params:
-        for location in params['locations']:
-            location.setdefault('lat', config(location['name'].upper() + '_LAT', cast=float, default=30.317170636707612))
-            location.setdefault('long', config(location['name'].upper() + '_LONG', cast=float, default=-97.75409570782983))
-
-    return params
-
 def config(name):
     return [config['value'] for config in configs if config['name'] == name][0]
 
