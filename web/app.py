@@ -1,7 +1,10 @@
-from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages
+from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages, abort
 from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key
 from decouple import config
 import os, signal, time
+
+# Flask Documentation 
+# See https://flask.palletsprojects.com/en/2.1.x/
 
 app = Flask(__name__)
 
@@ -89,7 +92,26 @@ def display():
 def services():
     if not is_logged_in():
         return redirect('/login')
-    return render_template('services.html', page="services")
+    return render_template('services.html', page="services", services=get_services())
+
+@app.route("/services/<service_name>", methods=['GET', 'POST'])
+def services_show(service_name):
+    if not is_logged_in():
+        return redirect('/login')
+
+    service = get_services(service_name)
+
+    if not service:
+        abort(404)
+
+    if request.method == 'POST':
+        for config in service['configs']:
+            value = request.form['configs[' + config['name'] + ']']
+            # Save service to cache/services.json
+            # set_config_key(config['name'].upper(), value)
+        return redirect('/restart')
+
+    return render_template('services_show.html', page="", service=service)
 
 @app.route("/device_info")
 def device_info():
@@ -121,6 +143,9 @@ def is_logged_in():
     if 'username' in session:
         return True
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")

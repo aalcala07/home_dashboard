@@ -7,7 +7,25 @@
   </style>
 {% endblock %}
 {% block content %}
-  <h1>Services</h1>
+  <div class="ui grid container padded">
+    <div class="eight wide column">
+      <h2>Services</h2>
+    </div>
+  </div>
+
+  <div class="ui grid container padded">
+    <div class="ui relaxed divided list column">
+    {% for service in services %}
+      <div class="item" style="padding: 20px 0;">
+        <i class="large {{ service['icon'] }} middle aligned icon"></i>
+        <div class="content">
+          <a href="{{ "/services/" + service['service'] }}" class="header ui small">{{ service['name'] }}</a>
+          <div class="description">{{ service['description'] }}</div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
 
 <!--   
   - List active services

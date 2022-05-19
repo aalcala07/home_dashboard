@@ -150,10 +150,35 @@ def get_display():
         "configs": display_configs
     }
 
-def get_services():
+def format_service_configs(configs):
+    formatted_configs = []
+    for config in configs:
+        formatted_configs.append({
+            'name': config['name'],
+            'label': config['name'].replace("_", " ").capitalize(),
+            'value': config['value'],
+            'type': type(config['value']).__name__
+        })
+    return formatted_configs
+
+def get_services(service_name=""):
     with open(config('SERVICES_CONFIG_FILE', 'services.json')) as json_file:
         grid_data = json.load(json_file)
-    return grid_data['services']
+
+    if service_name:
+        for service in grid_data['services']:
+            if service['service'] == service_name:
+                service['configs'] = format_service_configs(service['configs'])
+                return service
+        return False
+
+    services = []
+
+    for service in grid_data['services']:
+        service['configs'] = format_service_configs(service['configs'])
+        services.append(service)
+
+    return services
 
 # Get display templates (not Flask templates)
 def get_templates():
