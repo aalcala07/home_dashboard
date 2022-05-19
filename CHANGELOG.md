@@ -1,7 +1,22 @@
 # Release Notes
 
-## [Unreleased](https://github.com/aalcala07/home_dashboard/compare/v0.4.0...0.x)
+## [Unreleased](https://github.com/aalcala07/home_dashboard/compare/v0.5.0...0.x)
 
+## [v0.5.0](https://github.com/aalcala07/home_dashboard/compare/v0.4.0...v0.5.0) - 2022-05-19
+
+### Added
+
+- Added ability to enable and configure services from control panel
+
+### Changed
+
+- Made improvements to control panel UI
+- Changed how services and locations are stored
+- Made control panel enabled by default
+
+### Fixed
+
+- Fixed control panel layouts for mobile
 
 ## [v0.4.0](https://github.com/aalcala07/home_dashboard/compare/v0.3.0...v0.4.0) - 2022-05-13
 
