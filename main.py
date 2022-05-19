@@ -10,7 +10,7 @@ if not os.path.exists('cache/services.json'):
 if not os.path.exists('cache/locations.json'):
     shutil.copy('locations.json', 'cache/locations.json')
 
-ENABLE_CONTROL_PANEL = config('ENABLE_CONTROL_PANEL', default=False, cast=bool)
+ENABLE_CONTROL_PANEL = config('ENABLE_CONTROL_PANEL', default=True, cast=bool)
 
 def start_web():
     # return subprocess.Popen(['python', 'web/app.py'])
