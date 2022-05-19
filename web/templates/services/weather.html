@@ -1,0 +1,82 @@
+{% extends "layouts/app.html" %}
+{% block title %}Weather Service - Home Dashboard{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    
+  </style>
+{% endblock %}
+{% block content %}
+
+    {% include "components/service_header.html" %}
+
+    <div class="ui grid container padded" style="padding-top: 10px; padding-bottom: 15px">
+        <form class="ui form" method="post">
+            <div class="ui form">
+                {% for config in service['configs'] %}
+                    <div class="inline fields">
+                        <label for="configs[{{ config.name }}]" style="width: 200px">{{ config.label }}</label>
+
+                        {% if config.name == 'locations' %}
+                            {% for location in locations %}
+                            <div class="inline field">
+                                <div class="ui checkbox">
+                                    <input name="configs[locations][{{ location['name'] }}]" type="checkbox" tabindex="0" class="hidden" {% if location['name'] in config.value %} checked {% endif %}>
+                                    <label>{{ location['label'] }}</label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% elif config.type == 'bool' %}
+                        <div class="field">
+                            <div class="ui radio checkbox {% if config.value %} checked {% endif %}">
+                            <input type="radio" name="configs[{{ config.name }}]" {% if config.value %} checked="" {% endif %} tabindex="0" class="hidden" value="1">
+                            <label>Yes</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox {% if not config.value %} checked {% endif %}">
+                            <input type="radio" name="configs[{{ config.name }}]" {% if not config.value %} checked="" {% endif %} tabindex="0" class="hidden" value="0">
+                            <label>No</label>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="field">
+                            {% if config.type == 'int' %}
+                            <input type="number" name="configs[{{ config.name }}]" step="0" value="{{ config.value }}">
+                            {% elif config.type == 'float' %}
+                            <input type="number" name="configs[{{ config.name }}]" step="0.01" value="{{ config.value }}">
+                            {% else %}
+                            <input type="text" name="configs[{{ config.name }}]" value="{{ config.value }}">
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
+                    </div>
+                    
+                    {% if config.name == 'locations' %}
+                    <div class="ui small icon message blue" style="margin-bottom: 10px">
+                        <i class="exclamation circle icon"></i>
+                        <div class="content">
+                            <div class="header">
+                                Be Aware
+                            </div>
+                            <p>An API call is made for each location per update interval. If you add locations consider increasing the amount of time between updates to avoid going over your limit.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                {% endfor %}
+                
+            </div>
+
+            {% include "components/service_save_button.html" %}
+        </form>
+    </div>
+
+<!--   
+  - List active services
+  - List inactive services
+  - Allow changing service configurations
+ -->
+ 
+{% endblock %}

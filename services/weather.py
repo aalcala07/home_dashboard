@@ -3,7 +3,6 @@ from os.path import exists
 from decouple import config
 import logging
 
-OPEN_WEATHER_MAP_API_KEY = config('OPEN_WEATHER_MAP_API_KEY', default='', cast=str)
 OPEN_WEATHER_MAP_API_URL = "https://api.openweathermap.org"
 
 with open('cache/services.json') as json_file:
@@ -13,7 +12,9 @@ configs = [service['configs'] for service in service_config['services'] if servi
 # Request data from API
 def update():
 
-    if not OPEN_WEATHER_MAP_API_KEY or OPEN_WEATHER_MAP_API_KEY == '':
+    api_key = config('open_weather_map_api_key')
+    
+    if not api_key or api_key == '':
         logging.error('Cannot fetch weather. Missing OPEN_WEATHER_MAP_API_KEY')
         return
     
@@ -22,7 +23,7 @@ def update():
         logging.info('Fetching weather data for ' + location['name'])
 
         try:
-            r = requests.get(f'{OPEN_WEATHER_MAP_API_URL}/data/2.5/onecall?lat={location["lat"]}&lon={location["long"]}&appid={OPEN_WEATHER_MAP_API_KEY}&exclude=minutely,hourly,alerts&units=imperial')
+            r = requests.get(f'{OPEN_WEATHER_MAP_API_URL}/data/2.5/onecall?lat={location["lat"]}&lon={location["long"]}&appid={api_key}&exclude=minutely,hourly,alerts&units=imperial')
             weather_data = r.json()
 
             if 'current' in weather_data:

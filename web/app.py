@@ -1,5 +1,5 @@
 from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages, abort
-from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key, toggle_service
+from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key, toggle_service, get_locations, save_service_config
 from decouple import config
 import os, signal, time
 
@@ -100,16 +100,38 @@ def services_show(service_name):
         return redirect('/login')
 
     service = get_services(service_name)
+    locations = get_locations()
 
     if not service:
         abort(404)
 
     if request.method == 'POST':
-        for config in service['configs']:
-            value = request.form['configs[' + config['name'] + ']']
-            # Save service to cache/services.json
-            # set_config_key(config['name'].upper(), value)
-        return redirect('/restart')
+
+        for i in range(len(service['configs'])):
+
+            if service_name == 'weather' and service['configs'][i]['name'] == 'locations':
+                value = [location['name'] for location in locations if f'configs[locations][{location["name"]}]' in request.form and request.form[f'configs[locations][{location["name"]}]'] == 'on']
+            else:
+                value = request.form[f'configs[{service["configs"][i]["name"]}]']
+
+            value_type = service['configs'][i]['type']
+
+            if value_type == 'int':
+                value = int(value)
+            elif value_type == 'float':
+                value = float(value)
+
+            service['configs'][i]['value'] = value
+        
+        save_service_config(service_name, service)
+
+        if 'restart' in request.form:
+            return redirect('/restart')
+        return redirect('/services/' + service_name)
+
+    # Special templates for certain services
+    if service_name == 'weather':
+        return render_template('services/weather.html', page="", service=service, locations=locations)
 
     return render_template('services_show.html', page="", service=service)
 

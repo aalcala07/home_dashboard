@@ -3,16 +3,30 @@
         {
             "name": "Weather",
             "service": "weather",
-            "description": "Gets the current weather and forecast.",
+            "description": "Gets the current weather and forecast using the Open Weather Map API.",
             "icon": "cloud",
             "configs": [
                 {
+                    "name": "open_weather_map_api_key",
+                    "label": "Open Weather Map API Key",
+                    "value": ""
+                },
+                {
                     "name": "update_interval_seconds",
+                    "label": "Update Interval in Seconds",
                     "value": 300
                 },
                 {
                     "name": "locations",
-                    "value": "local"
+                    "value": ["local"]
+                },
+                {
+                    "name": "locations",
+                    "label": "Locations",
+                    "value": [
+                        "local"
+                    ],
+                    "type": "list"
                 }
             ]
         },

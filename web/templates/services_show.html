@@ -8,18 +8,7 @@
 {% endblock %}
 {% block content %}
 
-    <div class="ui grid container padded">
-        <div class="eight wide column">
-            <div class="ui breadcrumb">
-                <a href="/services" class="section">Services</a>
-                <div class="divider"> / </div>
-                <div class="active section">{{ service['name'] }}</div>
-            </div>
-            <h2>{{ service['name'] }}</h2>
-            <p>{{ service['description'] }}</p>
-        </div>
-    </div>
-
+    {% include "components/service_header.html" %}
 
     <div class="ui grid container padded" style="padding-top: 10px; padding-bottom: 15px">
         <form class="ui form" method="post">
@@ -56,9 +45,8 @@
                 </div>
                 {% endfor %}
             </div>
-            <button type=submit class="ui primary button">
-                Save and Restart
-            </button>
+
+            {% include "components/service_save_button.html" %}
         </form>
     </div>
 

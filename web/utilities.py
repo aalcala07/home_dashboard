@@ -156,9 +156,9 @@ def format_service_configs(configs):
     for config in configs:
         formatted_configs.append({
             'name': config['name'],
-            'label': config['name'].replace("_", " ").capitalize(),
+            'label': config['label'] if 'label' in config else config['name'].replace("_", " ").capitalize(),
             'value': config['value'],
-            'type': type(config['value']).__name__
+            'type': config['type'] if 'type' in config else type(config['value']).__name__
         })
     return formatted_configs
 
@@ -190,9 +190,22 @@ def toggle_service(service_name, enable):
         if service_data['services'][i]['service'] == service_name:
             service_data['services'][i]['enabled'] = enable
 
-    f = open(services_config_path, 'w')
-    f.write(json.dumps(service_data, indent=4))
+    update_services(service_data)
     return True
+
+def save_service_config(name, data):
+    with open(services_config_path) as json_file:
+        service_data = json.load(json_file)
+
+    for i in range(len(service_data['services'])):
+        if service_data['services'][i]['service'] == name:
+            service_data['services'][i] = data
+
+    update_services(service_data)
+
+def update_services(data):
+    f = open(services_config_path, 'w')
+    f.write(json.dumps(data, indent=4))
 
 # Get display templates (not Flask templates)
 def get_templates():
@@ -235,3 +248,8 @@ def set_config_key(key, value):
         f.writelines(lines)
     
     f.close()
+
+def get_locations():
+    with open('cache/locations.json') as json_file:
+        locations_config = json.load(json_file)
+    return locations_config['locations']

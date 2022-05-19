@@ -1,0 +1,11 @@
+{% if service['enabled'] %}
+<input type="hidden" name="restart" value="true">
+{% endif %}
+
+<button type=submit class="ui primary button">
+    {% if service['enabled'] %}
+    Save and Restart
+    {% else %}
+    Save
+    {% endif %}
+</button>

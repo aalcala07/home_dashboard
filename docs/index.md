@@ -90,9 +90,6 @@ The following settings can be changed in the `.env` file without writing any cod
 - `FPS` - The number of frames per second (refresh rate)
 - `SHOW_MOUSE` - Shows mouse cursor
 - `DEBUG_GRID` - Shows colored grid for debuging
-- `OPEN_WEATHER_MAP_API_KEY` - The API Key used to get weather data from the Open Weather Map API
-- `LOCAL_LAT` - The latitude value used when getting weather data from Open Weather Map API
-- `LOCAL_LONG` - The longitude value used when getting weather data from the Open Weather Map API
 - `UPDATE_ON_STARTUP` - Whether to trigger the update function on all services at startup
 - `TEMPLATE_CONFIG_FILE` - Specifiy which file to use for the template config. All custom templates must go inside of the `/templates` folder.
 - `SERVICES_CONFIG_FILE` - Specify which file to use for the services config.

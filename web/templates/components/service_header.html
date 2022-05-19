@@ -1,0 +1,22 @@
+<div class="ui grid container padded">
+    <div class="column">
+        <div class="ui breadcrumb">
+            <a href="/services" class="section">Services</a>
+            <div class="divider"> / </div>
+            <div class="active section">{{ service['name'] }}</div>
+        </div>
+        <h2 class="header ui">
+            {{ service['name'] }} 
+            {% if service['enabled'] %}
+            <div class="ui small label">
+                <i class="checkmark icon"></i> Enabled
+            </div>
+            {% else %}
+            <div class="ui small label">
+                <i class="ban icon"></i> Disabled
+            </div>
+            {% endif %}
+        </h2>
+        <p>{{ service['description'] }}</p>
+    </div>
+</div>

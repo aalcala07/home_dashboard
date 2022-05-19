@@ -2,8 +2,27 @@
     "locations": [
         {
             "name": "local",
+            "label": "Local",
             "lat": 30.276559343215137, 
             "long": -97.74036279785139
+        },
+        {
+            "name": "austin_tx",
+            "label": "Austin, TX",
+            "lat": 30.276559343215137, 
+            "long": -97.74036279785139
+        },
+        {
+            "name": "los_angeles_ca",
+            "label": "Los Angeles, CA",
+            "lat": 34.053855804162005, 
+            "long": -118.24266403065123
+        },
+        {
+            "name": "new_york_ny",
+            "label": "New York, NY",
+            "lat": 40.71283160269955, 
+            "long": -74.0059550439912
         }
     ]
 }
