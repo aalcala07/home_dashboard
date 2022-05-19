@@ -1,5 +1,5 @@
 from flask import Flask, session, render_template, redirect, request, flash, get_flashed_messages, abort
-from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key
+from utilities import generate_secret, store_password, check_password, is_registered, get_device_info, get_display, get_services, get_templates, set_config_key, toggle_service
 from decouple import config
 import os, signal, time
 
@@ -112,6 +112,16 @@ def services_show(service_name):
         return redirect('/restart')
 
     return render_template('services_show.html', page="", service=service)
+
+@app.route("/services/<service_name>/toggle", methods=['POST'])
+def services_toggle(service_name):
+    if not is_logged_in():
+        return redirect('/login')
+
+    enable = 'enable' in request.form and request.form['enable'] == 'on'
+    toggle_service(service_name, enable)
+    return redirect("/restart")
+
 
 @app.route("/device_info")
 def device_info():

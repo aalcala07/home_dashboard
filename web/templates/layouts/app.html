@@ -86,5 +86,9 @@
 
     $('.ui.radio.checkbox')
       .checkbox()
+
+    $('.service-toggle').on('change', function() {
+      $(this).closest('form').submit()
+    })
         
 </script>

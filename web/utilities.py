@@ -5,6 +5,7 @@ passwords_dir = 'web/.passwords'
 
 # Directory for display templates (not Flask templates)
 templates_dir = 'templates'
+services_config_path = 'cache/services.json'
 
 env_file = '.env'
 
@@ -162,11 +163,11 @@ def format_service_configs(configs):
     return formatted_configs
 
 def get_services(service_name=""):
-    with open(config('SERVICES_CONFIG_FILE', 'services.json')) as json_file:
-        grid_data = json.load(json_file)
+    with open(services_config_path) as json_file:
+        service_data = json.load(json_file)
 
     if service_name:
-        for service in grid_data['services']:
+        for service in service_data['services']:
             if service['service'] == service_name:
                 service['configs'] = format_service_configs(service['configs'])
                 return service
@@ -174,11 +175,24 @@ def get_services(service_name=""):
 
     services = []
 
-    for service in grid_data['services']:
+    for service in service_data['services']:
         service['configs'] = format_service_configs(service['configs'])
         services.append(service)
 
     return services
+
+# Enables or disables a service
+def toggle_service(service_name, enable):
+    with open(services_config_path) as json_file:
+        service_data = json.load(json_file)
+
+    for i in range(len(service_data['services'])):
+        if service_data['services'][i]['service'] == service_name:
+            service_data['services'][i]['enabled'] = enable
+
+    f = open(services_config_path, 'w')
+    f.write(json.dumps(service_data, indent=4))
+    return True
 
 # Get display templates (not Flask templates)
 def get_templates():
