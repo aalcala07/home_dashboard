@@ -64,7 +64,7 @@
       <h4>Services</h4>
       <div class="ui list">
         {% for service in services %}
-        <div class="item">{{ service.service }}</div>
+        <a href="/services/{{ service.service }}" class="item"><i class="icon {{service.icon}}"></i> {{ service.name }}</a>
         {% endfor %}
       </div>
     </div>
